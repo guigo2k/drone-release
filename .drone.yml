@@ -24,8 +24,8 @@ steps:
     - |
       echo "$KUBECONFIG" | base64 -d > /tmp/k3s.yaml && \
       KUBECONFIG=/tmp/k3s.yaml && \
-      DOCKER_PASSWORD=$(aws ecr get-login --no-include-email --region ${AWS_REGION} | cut -d ' ' -f6) && \
-      DOCKER_SERVER=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com &&\
+      DOCKER_PASSWORD=$(aws ecr get-login --no-include-email --region eu-west-1 | cut -d ' ' -f6) && \
+      DOCKER_SERVER=${AWS_ACCOUNT_ID}.dkr.ecr.eu-west-1.amazonaws.com &&\
       kubectl create secret docker-registry aws-ecr-credentials \
       --docker-username=AWS \
       --docker-email=hello@docker.com \
@@ -46,8 +46,8 @@ steps:
 #     access_key: ${AWS_ACCESS_KEY_ID}
 #     secret_key: ${AWS_SECRET_ACCESS_KEY}
 #     repo: drone-release
-#     registry: ${AWS_ACCOUNT_ID}.dkr.ecr.eu-west-1.amazonaws.com
-#     region: eu-west-1
+#     registry: ${AWS_ACCOUNT_ID}.dkr.ecr..amazonaws.com
+#     region:
 #     build_args:
 #       - version=1.0
 #
