@@ -2,10 +2,28 @@ kind: pipeline
 name: default
 
 steps:
-# - name: env
-#   image: busybox
-#   commands:
-#     - env
+- name: env
+  image: busybox
+  commands:
+    - env
+
+- name: publish
+  image: plugins/ecr
+  environment:
+    AWS_ACCOUNT_ID:
+      from_secret: aws_account_id
+    AWS_ACCESS_KEY_ID:
+      from_secret: aws_access_key_id
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: aws_secret_access_key
+  settings:
+    access_key: ${AWS_ACCESS_KEY_ID}
+    secret_key: ${AWS_SECRET_ACCESS_KEY}
+    repo: drone-release
+    registry: ${AWS_ACCOUNT_ID}.dkr.ecr..amazonaws.com
+    region:
+    build_args:
+      - version=1.1
 
 - name: secret
   image: xynova/aws-kubectl
@@ -25,8 +43,8 @@ steps:
       echo "$KUBECONFIG" | base64 -d > /tmp/k3s.yaml
       KUBECONFIG=/tmp/k3s.yaml
       SECRET_NAME="aws-ecr-credentials"
-      DOCKER_PASSWORD=$(aws ecr get-login --no-include-email --region eu-west-1 | cut -d ' ' -f6)
-      DOCKER_SERVER=${AWS_ACCOUNT_ID}.dkr.ecr.eu-west-1.amazonaws.com
+      DOCKER_PASSWORD=$(aws ecr get-login --no-include-email --region "$AWS_REGION" | cut -d ' ' -f6)
+      DOCKER_SERVER=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
 
       kubectl delete secret "$SECRET_NAME" --ignore-not-found
       kubectl create secret docker-registry "$SECRET_NAME" \
@@ -35,21 +53,5 @@ steps:
       --docker-server="$DOCKER_SERVER" \
       --docker-password="$DOCKER_PASSWORD"
 
-# - name: publish
-#   image: plugins/ecr
-#   environment:
-#     AWS_ACCOUNT_ID:
-#       from_secret: aws_account_id
-#     AWS_ACCESS_KEY_ID:
-#       from_secret: aws_access_key_id
-#     AWS_SECRET_ACCESS_KEY:
-#       from_secret: aws_secret_access_key
-#   settings:
-#     access_key: ${AWS_ACCESS_KEY_ID}
-#     secret_key: ${AWS_SECRET_ACCESS_KEY}
-#     repo: drone-release
-#     registry: ${AWS_ACCOUNT_ID}.dkr.ecr..amazonaws.com
-#     region:
-#     build_args:
-#       - version=1.0
-#
+      kubectl create deployment drone-release --image ${DOCKER_SERVER}/drone-release
+      kubectl expose deployment drone-release --port 80
