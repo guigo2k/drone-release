@@ -31,7 +31,7 @@ steps:
       --docker-email=hello@docker.com \
       --docker-server="$DOCKER_SERVER" \
       --docker-password="$DOCKER_PASSWORD" \
-      --dry-run -o yaml | kubectl apply -f -
+      --dry-run -o yaml
 
 # - name: publish
 #   image: plugins/ecr
