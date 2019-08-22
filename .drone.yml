@@ -22,13 +22,14 @@ steps:
       from_secret: kubeconfig
   commands:
     - |
-      echo "$KUBECONFIG" | base64 -d > /tmp/k3s.yaml && \
-      KUBECONFIG=/tmp/k3s.yaml && \
-      DOCKER_PASSWORD=$(aws ecr get-login --no-include-email --region eu-west-1 | cut -d ' ' -f6) && \
-      DOCKER_SERVER=${AWS_ACCOUNT_ID}.dkr.ecr.eu-west-1.amazonaws.com && \
-      kubectl delete secret aws-registry || true && \
-      kubectl create secret docker-registry aws-ecr-credentials \
-      --validate=false \
+      echo "$KUBECONFIG" | base64 -d > /tmp/k3s.yaml
+      KUBECONFIG=/tmp/k3s.yaml
+      SECRET_NAME="aws-ecr-credentials"
+      DOCKER_PASSWORD=$(aws ecr get-login --no-include-email --region eu-west-1 | cut -d ' ' -f6)
+      DOCKER_SERVER=${AWS_ACCOUNT_ID}.dkr.ecr.eu-west-1.amazonaws.com
+
+      kubectl delete secret "$SECRET_NAME" --ignore-not-found
+      kubectl create secret docker-registry "$SECRET_NAME" \
       --docker-username=AWS \
       --docker-email=hello@docker.com \
       --docker-server="$DOCKER_SERVER" \
