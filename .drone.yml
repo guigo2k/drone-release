@@ -29,8 +29,8 @@ steps:
       kubectl create secret docker-registry aws-ecr-credentials \
       --docker-username=AWS \
       --docker-email=hello@docker.com \
-      --docker-server=${DOCKER_SERVER} \
-      --docker-password=${DOCKER_PASSWORD} \
+      --docker-server="$DOCKER_SERVER" \
+      --docker-password="$DOCKER_PASSWORD" \
       --dry-run -o yaml | kubectl apply -f -
 
 # - name: publish
