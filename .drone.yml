@@ -19,12 +19,11 @@ steps:
     KUBECONFIG:
       from_secret: kubeconfig
   commands:
-    - echo "$KUBECONFIG" | base64 -d > /tmp/k3s.yaml
-    - aws ecr get-login --no-include-email --region eu-west-1 | cut -d ' ' -f6
-    - KUBECONFIG=/tmp/k3s.yaml
-    - DOCKER_PASSWORD=$(aws ecr get-login --no-include-email --region eu-west-1 | cut -d ' ' -f6)
+    - export DOCKER_PASSWORD=$(aws ecr get-login --no-include-email --region eu-west-1 | cut -d ' ' -f6)
     - echo ${DOCKER_PASSWORD}
-    - cat /tmp/k3s.yaml
+    # - echo "$KUBECONFIG" | base64 -d > /tmp/k3s.yaml
+    # - KUBECONFIG=/tmp/k3s.yaml
+    # - cat /tmp/k3s.yaml
 
     # - |
     #   kubectl create secret docker-registry aws-ecr-credentials \
