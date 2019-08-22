@@ -55,5 +55,5 @@ steps:
       --docker-server="$DOCKER_SERVER" \
       --docker-password="$DOCKER_PASSWORD"
 
-      kubectl create deployment drone-release --image ${DOCKER_SERVER}/drone-release
+      kubectl create deployment drone-release --image $DOCKER_SERVER/drone-release
       kubectl expose deployment drone-release --port 80
