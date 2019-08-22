@@ -19,8 +19,9 @@ steps:
     KUBECONFIG:
       from_secret: kubeconfig
   commands:
-    - export DOCKER_PASSWORD=$(aws ecr get-login --no-include-email --region eu-west-1 | cut -d ' ' -f6)
-    - echo ${DOCKER_PASSWORD}
+    - |
+    DOCKER_PASSWORD=$(aws ecr get-login --no-include-email --region eu-west-1 | cut -d ' ' -f6) && \
+    echo "$DOCKER_PASSWORD"
     # - echo "$KUBECONFIG" | base64 -d > /tmp/k3s.yaml
     # - KUBECONFIG=/tmp/k3s.yaml
     # - cat /tmp/k3s.yaml
