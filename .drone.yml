@@ -16,12 +16,14 @@ steps:
       from_secret: aws_access_key_id
     AWS_SECRET_ACCESS_KEY:
       from_secret: aws_secret_access_key
+    AWS_REGION:
+      from_secret: aws_region
   settings:
     access_key: ${AWS_ACCESS_KEY_ID}
     secret_key: ${AWS_SECRET_ACCESS_KEY}
     repo: drone-release
     registry: ${AWS_ACCOUNT_ID}.dkr.ecr..amazonaws.com
-    region:
+    region: ${AWS_REGION}
     build_args:
       - version=1.1
 
