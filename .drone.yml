@@ -26,13 +26,13 @@ steps:
       KUBECONFIG=/tmp/k3s.yaml && \
       DOCKER_PASSWORD=$(aws ecr get-login --no-include-email --region eu-west-1 | cut -d ' ' -f6) && \
       DOCKER_SERVER=${AWS_ACCOUNT_ID}.dkr.ecr.eu-west-1.amazonaws.com && \
+      kubectl delete secret aws-registry || true && \
       kubectl create secret docker-registry aws-ecr-credentials \
       --validate=false \
       --docker-username=AWS \
       --docker-email=hello@docker.com \
       --docker-server="$DOCKER_SERVER" \
-      --docker-password="$DOCKER_PASSWORD" \
-      --dry-run -o yaml | kubectl apply -f -
+      --docker-password="$DOCKER_PASSWORD"
 
 # - name: publish
 #   image: plugins/ecr
