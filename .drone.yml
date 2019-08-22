@@ -2,10 +2,10 @@ kind: pipeline
 name: default
 
 steps:
-- name: env
-  image: busybox
-  commands:
-    - env
+# - name: env
+#   image: busybox
+#   commands:
+#     - env
 
 - name: secret
   image: xynova/aws-kubectl
