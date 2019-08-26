@@ -2,30 +2,30 @@ kind: pipeline
 name: default
 
 steps:
-# - name: env
-#   image: busybox
-#   commands:
-#     - env
+- name: env
+  image: busybox
+  commands:
+    - env
 
-# - name: publish
-#   image: plugins/ecr
-#   environment:
-#     AWS_ACCOUNT_ID:
-#       from_secret: aws_account_id
-#     AWS_ACCESS_KEY_ID:
-#       from_secret: aws_access_key_id
-#     AWS_SECRET_ACCESS_KEY:
-#       from_secret: aws_secret_access_key
-#     AWS_REGION:
-#       from_secret: aws_region
-#   settings:
-#     access_key: ${AWS_ACCESS_KEY_ID}
-#     secret_key: ${AWS_SECRET_ACCESS_KEY}
-#     repo: drone-release
-#     registry: ${AWS_ACCOUNT_ID}.dkr.ecr..amazonaws.com
-#     region: eu-west-1
-#     build_args:
-#       - version=1.1
+- name: publish
+  image: plugins/ecr
+  environment:
+    AWS_ACCOUNT_ID:
+      from_secret: aws_account_id
+    AWS_ACCESS_KEY_ID:
+      from_secret: aws_access_key_id
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: aws_secret_access_key
+    AWS_REGION:
+      from_secret: aws_region
+  settings:
+    access_key: ${AWS_ACCESS_KEY_ID}
+    secret_key: ${AWS_SECRET_ACCESS_KEY}
+    repo: drone-release
+    registry: ${AWS_ACCOUNT_ID}.dkr.ecr..amazonaws.com
+    region: eu-west-1
+    build_args:
+      - version=1.1
 
 - name: secret
   image: guigo2k/aws-kubectl
