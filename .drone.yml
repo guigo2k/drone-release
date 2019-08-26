@@ -38,31 +38,3 @@ steps:
       from_secret: aws_secret_access_key
     aws_region: eu-west-1
     secret_name: ecr-credentials
-
-# - name: secret
-#   image: xynova/aws-kubectl
-#   environment:
-#     AWS_ACCOUNT_ID:
-#       from_secret: aws_account_id
-#     AWS_ACCESS_KEY_ID:
-#       from_secret: aws_access_key_id
-#     AWS_SECRET_ACCESS_KEY:
-#       from_secret: aws_secret_access_key
-#     AWS_REGION:
-#       from_secret: aws_region
-#     KUBECONFIG:
-#       from_secret: kubeconfig
-#   commands:
-#     - |
-#       echo "$KUBECONFIG" | base64 -d > /tmp/k3s.yaml
-#       KUBECONFIG=/tmp/k3s.yaml
-#       SECRET_NAME="aws-ecr-credentials"
-#       DOCKER_PASSWORD=$(aws ecr get-login --no-include-email --region "$AWS_REGION" | cut -d ' ' -f6)
-#       DOCKER_SERVER=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
-#
-#       kubectl delete secret "$SECRET_NAME" --ignore-not-found
-#       kubectl create secret docker-registry "$SECRET_NAME" \
-#       --docker-username=AWS \
-#       --docker-email=hello@docker.com \
-#       --docker-server="$DOCKER_SERVER" \
-#       --docker-password="$DOCKER_PASSWORD"
